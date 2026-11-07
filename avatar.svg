@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640">
+  <!-- Аватарка бота-помощника: лупа, в линзе — флаг Грузии. «Найду в Грузии».
+       Всё внутри круга радиусом ~280 px: Telegram обрезает аватарку кругом. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffb59c"/><stop offset="1" stop-color="#f4675a"/>
+    </linearGradient>
+    <clipPath id="lens"><circle cx="285" cy="285" r="138"/></clipPath>
+  </defs>
+  <rect width="640" height="640" fill="url(#bg)"/>
+  <!-- мягкая тень -->
+  <circle cx="297" cy="300" r="166" fill="#8a1c22" opacity="0.18"/>
+  <path d="M 412 425 L 487 500" stroke="#8a1c22" stroke-opacity="0.18" stroke-width="64" stroke-linecap="round"/>
+  <!-- ручка -->
+  <path d="M 398 398 L 478 478" stroke="#3a0a14" stroke-width="60" stroke-linecap="round"/>
+  <path d="M 412 404 L 470 462" stroke="#5c1a27" stroke-width="14" stroke-linecap="round"/>
+  <!-- оправа -->
+  <circle cx="285" cy="285" r="162" fill="#3a0a14"/>
+  <!-- флаг Грузии в линзе -->
+  <g clip-path="url(#lens)">
+    <rect x="140" y="140" width="290" height="290" fill="#ffffff"/>
+    <rect x="140" y="263" width="290" height="44" fill="#e8112d"/>
+    <rect x="263" y="140" width="44" height="290" fill="#e8112d"/>
+    <path transform="translate(207 207) scale(0.5)" fill="#e8112d" d="M -15 -46 L 15 -46 L 7 -7 L 46 -15 L 46 15 L 7 7 L 15 46 L -15 46 L -7 7 L -46 15 L -46 -15 L -7 -7 Z"/>
+    <path transform="translate(363 207) scale(0.5)" fill="#e8112d" d="M -15 -46 L 15 -46 L 7 -7 L 46 -15 L 46 15 L 7 7 L 15 46 L -15 46 L -7 7 L -46 15 L -46 -15 L -7 -7 Z"/>
+    <path transform="translate(207 363) scale(0.5)" fill="#e8112d" d="M -15 -46 L 15 -46 L 7 -7 L 46 -15 L 46 15 L 7 7 L 15 46 L -15 46 L -7 7 L -46 15 L -46 -15 L -7 -7 Z"/>
+    <path transform="translate(363 363) scale(0.5)" fill="#e8112d" d="M -15 -46 L 15 -46 L 7 -7 L 46 -15 L 46 15 L 7 7 L 15 46 L -15 46 L -7 7 L -46 15 L -46 -15 L -7 -7 Z"/>
+    <!-- блик на стекле -->
+    <ellipse cx="250" cy="200" rx="120" ry="70" transform="rotate(-35 250 200)" fill="#ffffff" opacity="0.22"/>
+  </g>
+  <circle cx="285" cy="285" r="150" fill="none" stroke="#5c1a27" stroke-width="6"/>
+</svg>

@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Помощник по Грузии</title>
+<meta name="description" content="Помощник по Грузии в Telegram. Начинаем с жилья: свежие квартиры от собственников в Тбилиси, Батуми, Кутаиси и Рустави — всем сразу, без форы агентам.">
+<link rel="icon" href="avatar.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Noto+Sans+Georgian:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Цвета аватарки: коралловый фон, тёмно-винная оправа лупы, красный флага */
+  :root {
+    --coral-1: #ffb59c; --coral-2: #f4675a;
+    --wine: #3a0a14; --wine-2: #5c1a27;
+    --red: #e8112d;
+    --paper: #fffaf6; --card: #ffffff; --tint: #fff0e8;
+    --ink: #1d0a0f; --ink-2: #5e4a4e; --line: #f1dfd6;
+    --on-coral: #2a070e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #160b0e; --card: #22141a; --tint: #2b1820;
+      --ink: #f8ecea; --ink-2: #c9b3b2; --line: #3a252b; --red: #ff4a5e;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #160b0e; --card: #22141a; --tint: #2b1820;
+    --ink: #f8ecea; --ink-2: #c9b3b2; --line: #3a252b; --red: #ff4a5e;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font: 17px/1.55 "Manrope", "Noto Sans Georgian", -apple-system, "Segoe UI", sans-serif; }
+  a { color: inherit; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 16px; }
+  h1, h2, h3 { font-weight: 800; line-height: 1.12; letter-spacing: -0.015em; margin: 0; }
+  h2 { font-size: clamp(28px, 4.2vw, 40px); margin-bottom: 10px; }
+  .lead { color: var(--ink-2); font-size: 18px; max-width: 640px; margin: 0; }
+  .bx { width: 1em; height: 1em; display: inline-block; flex: none; color: var(--red); }
+
+  /* ---------- первый экран ---------- */
+  .hero { background: linear-gradient(135deg, var(--coral-1), var(--coral-2)); color: var(--on-coral);
+          border-radius: 0 0 36px 36px; position: relative; overflow: hidden; }
+  /* узор из малых крестов флага — едва заметный */
+  .hero::before { content: ""; position: absolute; inset: 0; opacity: .10; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Cpath transform='translate(40 40) scale(0.22)' fill='%233a0a14' d='M -15 -46 L 15 -46 L 7 -7 L 46 -15 L 46 15 L 7 7 L 15 46 L -15 46 L -7 7 L -46 15 L -46 -15 L -7 -7 Z'/%3E%3C/svg%3E");
+    background-size: 80px 80px; }
+  header { position: relative; display: flex; align-items: center; justify-content: space-between;
+           gap: 12px; padding: 16px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; text-decoration: none; }
+  .brand img { width: 38px; height: 38px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(255,255,255,.6); }
+  .lang { display: flex; gap: 4px; }
+  .lang button { border: 0; background: rgba(255,255,255,.45); color: var(--on-coral); border-radius: 9px;
+                 padding: 7px 10px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; min-height: 36px; }
+  .lang button { display: inline-flex; align-items: center; gap: 6px; }
+  .lang .flag { width: 22px; height: 15px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(58,10,20,.18); flex: none; }
+  .lang button[aria-pressed="true"] { background: var(--wine); color: #fff; }
+  .lang button[aria-pressed="true"] .flag { box-shadow: 0 0 0 1.5px #fff; }
+  @media (max-width: 420px) { .lang button span { display: none; } .lang button { padding: 8px; } }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.25fr .75fr; gap: 28px;
+               align-items: center; padding: 34px 0 60px; }
+  .hero h1 { font-size: clamp(36px, 6vw, 64px); }
+  .hero h1 span { color: #fff; text-shadow: 0 2px 0 rgba(58,10,20,.25); }
+  .hero p.sub { font-size: 19px; margin: 16px 0 24px; max-width: 560px; color: #3d1017; }
+  .hero-art { display: grid; place-items: center; }
+  .hero-art img { width: min(320px, 80%); height: auto; aspect-ratio: 1; border-radius: 50%; box-shadow: 0 30px 60px rgba(58,10,20,.25),
+                  0 0 0 10px rgba(255,255,255,.35); }
+
+  /* поисковая строка — главный образ: «помощник, который ищет» */
+  .search { display: flex; align-items: center; gap: 12px; background: #fff; color: var(--ink);
+            border-radius: 18px; padding: 10px 10px 10px 18px; max-width: 580px;
+            box-shadow: 0 14px 40px rgba(58,10,20,.18); }
+  .search svg.lens { width: 22px; height: 22px; flex: none; color: var(--wine); }
+  .search .q { flex: 1; min-width: 0; font-weight: 700; white-space: nowrap; overflow: hidden;
+               text-overflow: ellipsis; color: #1d0a0f; }
+  .search .q::after { content: "▏"; color: var(--red); animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .cta { display: inline-flex; align-items: center; justify-content: center; gap: 9px; background: var(--wine);
+         color: #fff; text-decoration: none; font-weight: 800; padding: 13px 18px; border-radius: 13px;
+         min-height: 48px; white-space: nowrap; }
+  .cta:hover { background: var(--wine-2); }
+  .cta svg { width: 20px; height: 20px; }
+  .hero small { display: block; margin-top: 12px; font-size: 14px; color: #4a141d; }
+
+  section.block { padding: 72px 0 0; }
+
+  /* ---------- услуги ---------- */
+  .services { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; margin-top: 26px; }
+  .svc { border-radius: 24px; padding: 26px; border: 1px solid var(--line); background: var(--card); }
+  .svc.live { background: var(--wine); color: #fff; border-color: var(--wine); }
+  .svc .tag { display: inline-block; font-size: 13px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
+              background: #2f9e44; color: #fff; margin-bottom: 14px; }
+  .svc.soon .tag { background: var(--tint); color: var(--ink-2); }
+  .svc h3 { font-size: 24px; margin-bottom: 8px; }
+  .svc p { margin: 0 0 14px; opacity: .9; }
+  .svc ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .svc li { display: flex; gap: 10px; align-items: baseline; }
+  .svc.live .bx { color: #ff8a8a; }
+  .svc.live li span { opacity: .92; }
+  .svc.soon a { color: var(--red); font-weight: 700; }
+
+  /* ---------- отличие ---------- */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 26px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+  .card .icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+                background: var(--tint); font-size: 22px; }
+  .card h3 { font-size: 19px; margin: 14px 0 6px; }
+  .card p { margin: 0; color: var(--ink-2); font-size: 16px; }
+
+  /* ---------- шаги ---------- */
+  .steps { counter-reset: s; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+           margin-top: 26px; padding: 0; list-style: none; }
+  .steps li { background: var(--tint); border-radius: 20px; padding: 22px; }
+  .steps li::before { counter-increment: s; content: counter(s); display: grid; place-items: center;
+    width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--coral-1), var(--coral-2));
+    color: var(--on-coral); font-weight: 800; margin-bottom: 12px; }
+  .steps b { display: block; font-size: 18px; margin-bottom: 4px; }
+  .steps span { color: var(--ink-2); font-size: 16px; }
+
+  /* ---------- тарифы ---------- */
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 26px; }
+  .plan { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px;
+          display: flex; flex-direction: column; gap: 10px; position: relative; }
+  .plan.best { border: 2px solid var(--coral-2); }
+  .plan.best::before { content: attr(data-badge); position: absolute; top: -12px; left: 20px;
+    background: linear-gradient(135deg, var(--coral-1), var(--coral-2)); color: var(--on-coral);
+    font-size: 12.5px; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+  .plan h3 { font-size: 18px; }
+  .price { font-size: 34px; font-weight: 800; }
+  .price small { font-size: 15px; color: var(--ink-2); font-weight: 600; }
+  .plan ul { margin: 0; padding: 0; list-style: none; color: var(--ink-2); font-size: 15.5px; }
+  .plan li { padding: 4px 0 4px 24px; position: relative; }
+  .plan li svg { position: absolute; left: 0; top: 9px; width: 13px; height: 13px; color: var(--red); }
+
+  /* ---------- вопросы ---------- */
+  .faq { margin-top: 18px; }
+  details { border-bottom: 1px solid var(--line); padding: 16px 0; }
+  summary { cursor: pointer; font-weight: 700; font-size: 18px; list-style: none; display: flex;
+            justify-content: space-between; gap: 14px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--coral-2); font-weight: 800; font-size: 24px; line-height: 1; }
+  details[open] summary::after { content: "–"; }
+  details p { color: var(--ink-2); margin: 10px 0 0; }
+
+  /* ---------- финал ---------- */
+  .final { margin: 80px 0 0; background: var(--wine); color: #fff; border-radius: 30px; padding: 36px 30px;
+           display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .final .who { display: flex; align-items: center; gap: 18px; }
+  .final img { width: 72px; height: 72px; border-radius: 50%; }
+  .final h2 { margin: 0 0 4px; }
+  .final p { margin: 0; opacity: .85; }
+  .final .cta { background: linear-gradient(135deg, var(--coral-1), var(--coral-2)); color: var(--on-coral); }
+  footer { color: var(--ink-2); font-size: 14px; padding: 28px 0 40px; display: flex;
+           justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; border-radius: 8px; }
+  @media (prefers-reduced-motion: reduce) { .search .q::after { animation: none; } html { scroll-behavior: auto; } }
+
+  @media (max-width: 760px) {
+    .hero-grid { grid-template-columns: 1fr; padding: 18px 0 40px; gap: 8px; }
+    .hero-art { order: -1; }
+    .hero-art img { width: 150px; }
+    .hero p.sub { font-size: 17px; }
+    .search { flex-wrap: wrap; padding: 12px; }
+    .search .q { flex-basis: calc(100% - 40px); }
+    .search .cta { width: 100%; }
+    .services, .cards, .steps, .plans { grid-template-columns: 1fr; }
+    section.block { padding-top: 56px; }
+    .final { padding: 26px 20px; }
+    .final .cta { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="bolnisi" viewBox="-50 -50 100 100">
+    <path fill="currentColor" d="M -15 -46 L 15 -46 L 7 -7 L 46 -15 L 46 15 L 7 7 L 15 46 L -15 46 L -7 7 L -46 15 L -46 -15 L -7 -7 Z"/>
+  </symbol>
+  <symbol id="tg" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13 1.4 11.5c-1-.3-1.1-1 .2-1.5L20.5 2.8c.9-.3 1.7.2 1.4 1.5z"/>
+  </symbol>
+</svg>
+
+<div class="hero">
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#"><img src="avatar.png" alt=""><span data-i18n="brand">Помощник по Грузии</span></a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="ru" aria-pressed="true" title="Русский"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><rect y="6.67" width="30" height="6.67" fill="#0039a6"/><rect y="13.33" width="30" height="6.67" fill="#d52b1e"/></svg><span>RU</span></button>
+        <button type="button" data-lang="en" aria-pressed="false" title="English"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><clipPath id="ukc"><rect width="60" height="40"/></clipPath><g clip-path="url(#ukc)"><rect width="60" height="40" fill="#012169"/><path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="8"/><path d="M0 0 60 40M60 0 0 40" stroke="#c8102e" stroke-width="3"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#c8102e" stroke-width="7"/></g></svg><span>EN</span></button>
+        <button type="button" data-lang="ka" aria-pressed="false" title="ქართული"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><rect x="13" width="4" height="20" fill="#e8112d"/><rect y="8" width="30" height="4" fill="#e8112d"/><g fill="#e8112d"><path d="M6 2.2h1v1.8h1.8v1H7v1.8H6V5H4.2V4H6z"/><path d="M23 2.2h1v1.8h1.8v1H24v1.8h-1V5h-1.8V4H23z"/><path d="M6 13.2h1v1.8h1.8v1H7v1.8H6V16H4.2v-1H6z"/><path d="M23 13.2h1v1.8h1.8v1H24v1.8h-1V16h-1.8v-1H23z"/></g></svg><span>KA</span></button>
+      </div>
+    </header>
+    <div class="hero-grid">
+      <div>
+        <h1 data-i18n-html="h1">Найдём в Грузии <span>то, что нужно вам</span></h1>
+        <p class="sub" data-i18n="sub">Помощник в Telegram. Начинаем с жилья: свежие квартиры от собственников в Тбилиси, Батуми, Кутаиси и Рустави — всем сразу, без форы агентам.</p>
+        <div class="search">
+          <svg class="lens" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+          <span class="q" id="typed" aria-live="off"></span>
+          <a class="cta" href="https://t.me/georgia_helper_bot"><svg aria-hidden="true"><use href="#tg"/></svg><span data-i18n="cta">Открыть бота</span></a>
+        </div>
+        <small data-i18n="ctaNote">Бесплатно. Настройка — за минуту.</small>
+      </div>
+      <div class="hero-art"><img src="avatar.png" alt="" width="320" height="320"></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="block" id="services">
+    <h2 data-i18n="svcTitle">Чем помогает</h2>
+    <p class="lead" data-i18n="svcLead">Мы растём по одной задаче за раз — и делаем каждую хорошо.</p>
+    <div class="services">
+      <div class="svc live">
+        <span class="tag" data-i18n="live">Работает</span>
+        <h3 data-i18n="rentT">Аренда квартир</h3>
+        <p data-i18n="rentP">Новые объявления с MyHome.ge приходят в Telegram через минуты после публикации.</p>
+        <ul>
+          <li><svg class="bx" aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="r1">4 города, районы Тбилиси, бюджет, комнаты</span></li>
+          <li><svg class="bx" aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="r2">Пометка «похоже на агента» и никаких дублей</span></li>
+          <li><svg class="bx" aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="r3">Подборка за 30 дней и цены на рынке</span></li>
+          <li><svg class="bx" aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="r4">Отзывы об арендодателях: вернули ли депозит</span></li>
+        </ul>
+      </div>
+      <div class="svc soon">
+        <span class="tag" data-i18n="soon">Скоро</span>
+        <h3 data-i18n="nextT">Что дальше — решаете вы</h3>
+        <p data-i18n="nextP">Следующие задачи выберем по вашим запросам. Напишите в боте, с чем в Грузии вам нужна помощь.</p>
+        <a href="https://t.me/georgia_helper_bot" data-i18n="nextA">Предложить задачу →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="why">
+    <h2 data-i18n="whyTitle">Почему нам доверяют</h2>
+    <div class="cards">
+      <div class="card"><div class="icon">⚖️</div><h3 data-i18n="c1t">Всем одинаково</h3><p data-i18n="c1">Никаких платных «тарифов для риелторов» с форой. Новое объявление приходит всем одновременно.</p></div>
+      <div class="card"><div class="icon">🔎</div><h3 data-i18n="c2t">Видно агентов</h3><p data-i18n="c2">Если у продавца десятки объявлений, бот предупредит — даже если тот назвался собственником.</p></div>
+      <div class="card"><div class="icon">🌍</div><h3 data-i18n="c3t">На вашем языке</h3><p data-i18n="c3">Русский, английский, грузинский, хинди и фарси.</p></div>
+    </div>
+  </section>
+
+  <section class="block" id="how">
+    <h2 data-i18n="howTitle">Как начать</h2>
+    <ol class="steps">
+      <li><b data-i18n="s1t">Откройте бота</b><span data-i18n="s1">И выберите язык.</span></li>
+      <li><b data-i18n="s2t">Расскажите, что ищете</b><span data-i18n="s2">Город, районы, бюджет, комнаты — кнопками или на одном экране настроек.</span></li>
+      <li><b data-i18n="s3t">Получайте находки</b><span data-i18n="s3">Подходящее приходит само, с фото и кнопкой «Открыть».</span></li>
+    </ol>
+  </section>
+
+  <section class="block" id="prices">
+    <h2 data-i18n="priceTitle">Тарифы</h2>
+    <p class="lead" data-i18n="priceLead">Оплата — Telegram Stars прямо в боте, карта не нужна.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3 data-i18n="p0t">Бесплатно</h3>
+        <div class="price">0 <small>⭐</small></div>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="p0a">1 фильтр</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="p0b">10 квартир в день</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="p0c">5 последних из подборки</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="p0d">Цены по городу</span></li>
+        </ul>
+      </div>
+      <div class="plan">
+        <h3 data-i18n="p1t">Неделя</h3>
+        <div class="price">250 <small>⭐</small></div>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="pa">Квартиры без ограничений</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="pb">Несколько фильтров</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="pc">Вся подборка за 30 дней</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="pd">Цены по вашим районам</span></li>
+        </ul>
+      </div>
+      <div class="plan best" data-badge="Выгоднее" data-i18n-badge="best">
+        <h3 data-i18n="p2t">Месяц</h3>
+        <div class="price">600 <small>⭐</small></div>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="pa">Квартиры без ограничений</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="pb">Несколько фильтров</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="pc">Вся подборка за 30 дней</span></li>
+          <li><svg aria-hidden="true"><use href="#bolnisi"/></svg><span data-i18n="pd">Цены по вашим районам</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="faq">
+    <h2 data-i18n="faqTitle">Вопросы</h2>
+    <div class="faq">
+      <details><summary data-i18n="q1">Откуда объявления?</summary><p data-i18n="a1">С MyHome.ge — крупнейшего сайта недвижимости Грузии. Бот регулярно проверяет новые объявления.</p></details>
+      <details><summary data-i18n="q2">Чем бесплатная версия отличается от подписки?</summary><p data-i18n="a2">Бесплатно — один фильтр и до 10 квартир в день. С подпиской — без ограничений, несколько фильтров и вся подборка за месяц.</p></details>
+      <details><summary data-i18n="q3">Бот гарантирует, что квартира от собственника?</summary><p data-i18n="a3">Нет. Он показывает, как продавец отметил себя на сайте, и предупреждает, если тот похож на агента. Перед встречей всё равно уточните.</p></details>
+      <details><summary data-i18n="q4">Будет ли что-то кроме квартир?</summary><p data-i18n="a4">Да — бот задуман как помощник по жизни в Грузии. Какие задачи добавить следующими, решим по запросам пользователей.</p></details>
+    </div>
+  </section>
+
+  <div class="final">
+    <div class="who"><img src="avatar.png" alt=""><div><h2 data-i18n="finalTitle">Начните поиск</h2><p data-i18n="finalSub">Помощник уже ждёт в Telegram.</p></div></div>
+    <a class="cta" href="https://t.me/georgia_helper_bot"><svg aria-hidden="true"><use href="#tg"/></svg><span data-i18n="cta">Открыть бота</span></a>
+  </div>
+
+  <footer>
+    <span>© 2026 · @georgia_helper_bot</span>
+    <span data-i18n="foot">Данные объявлений — MyHome.ge. Бот не связан с MyHome.ge.</span>
+  </footer>
+</div>
+
+<script>
+const EXAMPLES = {
+  ru: ["2-комнатная в Ваке до $900", "Квартира в Батуми с животными", "Только собственники, Сабуртало", "Студия в центре Тбилиси до $500"],
+  en: ["2-room flat in Vake under $900", "Pet-friendly flat in Batumi", "Owners only, Saburtalo", "Studio in central Tbilisi under $500"],
+  ka: ["2-ოთახიანი ვაკეში $900-მდე", "ბინა ბათუმში ცხოველით", "მხოლოდ მესაკუთრეები, საბურთალო", "სტუდიო თბილისის ცენტრში $500-მდე"],
+};
+const I18N = {
+  en: {
+    brand: "Georgia Helper", h1: "We'll find in Georgia <span>what you need</span>",
+    sub: "A helper in Telegram. Starting with housing: fresh owner listings in Tbilisi, Batumi, Kutaisi and Rustavi — to everyone at once, no head start for agents.",
+    cta: "Open the bot", ctaNote: "Free. Set up in a minute.",
+    svcTitle: "How it helps", svcLead: "We grow one task at a time — and do each one well.",
+    live: "Live", rentT: "Apartment rentals", rentP: "New MyHome.ge listings arrive in Telegram minutes after they're posted.",
+    r1: "4 cities, Tbilisi districts, budget, rooms", r2: "“Looks like an agent” flag and no duplicates",
+    r3: "30-day selection and market prices", r4: "Landlord reviews: was the deposit returned",
+    soon: "Coming", nextT: "What's next is up to you", nextP: "We'll pick the next tasks from your requests. Tell the bot what you need help with in Georgia.",
+    nextA: "Suggest a task →",
+    whyTitle: "Why people trust us", c1t: "Equal for everyone", c1: "No paid “realtor plans” with a head start. New listings reach everyone at the same time.",
+    c2t: "Agents are visible", c2: "If a seller has dozens of listings, the bot warns you — even if they call themselves an owner.",
+    c3t: "In your language", c3: "Russian, English, Georgian, Hindi and Persian.",
+    howTitle: "How to start", s1t: "Open the bot", s1: "And pick a language.",
+    s2t: "Say what you're looking for", s2: "City, districts, budget, rooms — with buttons or on one settings screen.",
+    s3t: "Get matches", s3: "Matches arrive on their own, with a photo and an “Open” button.",
+    priceTitle: "Plans", priceLead: "Pay with Telegram Stars right in the bot — no card needed.",
+    p0t: "Free", p0a: "1 filter", p0b: "10 flats a day", p0c: "Latest 5 from the selection", p0d: "City-wide prices",
+    p1t: "Week", p2t: "Month", pa: "Unlimited flats", pb: "Several filters", pc: "Full 30-day selection", pd: "Prices for your districts", best: "Best value",
+    faqTitle: "Questions", q1: "Where do listings come from?", a1: "From MyHome.ge, Georgia's largest real-estate site. The bot checks for new listings regularly.",
+    q2: "Free vs subscription?", a2: "Free: one filter and up to 10 flats a day. Subscription: no limits, several filters and the full month's selection.",
+    q3: "Does the bot guarantee the seller is an owner?", a3: "No. It shows how the seller marked themselves and warns if they look like an agent. Double-check before a viewing.",
+    q4: "Will there be more than apartments?", a4: "Yes — the bot is meant as a helper for life in Georgia. We'll choose the next tasks based on what users ask for.",
+    finalTitle: "Start searching", finalSub: "Your helper is waiting in Telegram.",
+    foot: "Listing data — MyHome.ge. The bot is not affiliated with MyHome.ge."
+  },
+  ka: {
+    brand: "დამხმარე საქართველოში", h1: "ვიპოვით საქართველოში <span>იმას, რაც გჭირდებათ</span>",
+    sub: "დამხმარე Telegram-ში. ვიწყებთ საცხოვრებლით: მესაკუთრეების ახალი ბინები თბილისში, ბათუმში, ქუთაისსა და რუსთავში — ყველას ერთდროულად, აგენტების უპირატესობის გარეშე.",
+    cta: "ბოტის გახსნა", ctaNote: "უფასოა. დაყენება — ერთ წუთში.",
+    svcTitle: "რაში გეხმარებათ", svcLead: "ვიზრდებით ერთი ამოცანით — და თითოეულს კარგად ვაკეთებთ.",
+    live: "მუშაობს", rentT: "ბინების ქირავნობა", rentP: "MyHome.ge-ის ახალი განცხადებები Telegram-ში გამოქვეყნებიდან რამდენიმე წუთში მოდის.",
+    r1: "4 ქალაქი, თბილისის უბნები, ბიუჯეტი, ოთახები", r2: "მონიშვნა „ჰგავს აგენტს“ და დუბლიკატების გარეშე",
+    r3: "30 დღის შერჩევა და ფასები ბაზარზე", r4: "შეფასებები მეპატრონეებზე: დააბრუნეს თუ არა დეპოზიტი",
+    soon: "მალე", nextT: "რა იქნება შემდეგ — თქვენ წყვეტთ", nextP: "შემდეგ ამოცანებს თქვენი მოთხოვნებით ავირჩევთ. მოგვწერეთ ბოტში, რაში გჭირდებათ დახმარება.",
+    nextA: "ამოცანის შეთავაზება →",
+    whyTitle: "რატომ გვენდობიან", c1t: "ყველასთვის თანაბრად", c1: "არანაირი ფასიანი „რიელტორის ტარიფი“. ახალი განცხადება ყველას ერთდროულად მოდის.",
+    c2t: "აგენტები ჩანს", c2: "თუ გამყიდველს ათობით განცხადება აქვს, ბოტი გაგაფრთხილებთ — მაშინაც, თუ მესაკუთრედ წარადგინა თავი.",
+    c3t: "თქვენს ენაზე", c3: "რუსული, ინგლისური, ქართული, ჰინდი და სპარსული.",
+    howTitle: "როგორ დავიწყოთ", s1t: "გახსენით ბოტი", s1: "და აირჩიეთ ენა.",
+    s2t: "გვითხარით, რას ეძებთ", s2: "ქალაქი, უბნები, ბიუჯეტი, ოთახები — ღილაკებით ან პარამეტრების ერთ ეკრანზე.",
+    s3t: "მიიღეთ მიგნებები", s3: "შესაფერისი თავად მოდის, ფოტოთი და ღილაკით „გახსნა“.",
+    priceTitle: "ტარიფები", priceLead: "გადახდა — Telegram Stars-ით, პირდაპირ ბოტში, ბარათი არ არის საჭირო.",
+    p0t: "უფასო", p0a: "1 ფილტრი", p0b: "10 ბინა დღეში", p0c: "შერჩევიდან ბოლო 5", p0d: "ფასები ქალაქის მიხედვით",
+    p1t: "კვირა", p2t: "თვე", pa: "ბინები შეზღუდვის გარეშე", pb: "რამდენიმე ფილტრი", pc: "სრული შერჩევა 30 დღის", pd: "ფასები თქვენი უბნებისთვის", best: "უფრო მომგებიანი",
+    faqTitle: "კითხვები", q1: "საიდან არის განცხადებები?", a1: "MyHome.ge-დან — საქართველოს უდიდესი უძრავი ქონების საიტიდან. ბოტი ახალ განცხადებებს რეგულარულად ამოწმებს.",
+    q2: "რით განსხვავდება უფასო ვერსია?", a2: "უფასოდ — ერთი ფილტრი და დღეში 10 ბინამდე. გამოწერით — შეზღუდვის გარეშე, რამდენიმე ფილტრი და თვის სრული შერჩევა.",
+    q3: "ბოტი იძლევა გარანტიას, რომ ბინა მესაკუთრისაა?", a3: "არა. ის აჩვენებს, როგორ მონიშნა თავი გამყიდველმა საიტზე, და გაფრთხილებთ, თუ აგენტს ჰგავს. შეხვედრამდე მაინც დააზუსტეთ.",
+    q4: "იქნება რამე ბინების გარდა?", a4: "დიახ — ბოტი ჩაფიქრებულია როგორც დამხმარე საქართველოში ცხოვრებისთვის. შემდეგ ამოცანებს მომხმარებლების მოთხოვნით ავირჩევთ.",
+    finalTitle: "დაიწყეთ ძიება", finalSub: "დამხმარე უკვე გელოდებათ Telegram-ში.",
+    foot: "განცხადებების მონაცემები — MyHome.ge. ბოტი არ არის დაკავშირებული MyHome.ge-სთან."
+  }
+};
+const RU = {};
+document.querySelectorAll("[data-i18n]").forEach(el => RU[el.dataset.i18n] = el.textContent);
+document.querySelectorAll("[data-i18n-html]").forEach(el => RU[el.dataset.i18nHtml] = el.innerHTML);
+RU.best = document.querySelector("[data-i18n-badge]").dataset.badge;
+const TITLES = { ru: "Помощник по Грузии", en: "Georgia Helper", ka: "დამხმარე საქართველოში" };
+let lang = "ru";
+
+function setLang(l) {
+  lang = l;
+  const d = l === "ru" ? RU : I18N[l];
+  document.documentElement.lang = l;
+  document.title = TITLES[l];
+  document.querySelectorAll("[data-i18n]").forEach(el => { if (d[el.dataset.i18n]) el.textContent = d[el.dataset.i18n]; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { if (d[el.dataset.i18nHtml]) el.innerHTML = d[el.dataset.i18nHtml]; });
+  document.querySelector("[data-i18n-badge]").dataset.badge = d.best;
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  try { localStorage.setItem("lang", l); } catch (e) {}
+  restartTyping();
+}
+
+// Поисковая строка «печатает» примеры запросов
+const typed = document.getElementById("typed");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let timer = null, ex = 0, pos = 0, deleting = false;
+function tick() {
+  const list = EXAMPLES[lang], text = list[ex % list.length];
+  if (reduced) { typed.textContent = text; ex++; timer = setTimeout(tick, 3000); return; }
+  if (!deleting) {
+    pos++; typed.textContent = text.slice(0, pos);
+    if (pos >= text.length) { deleting = true; timer = setTimeout(tick, 1700); return; }
+    timer = setTimeout(tick, 55);
+  } else {
+    pos--; typed.textContent = text.slice(0, pos);
+    if (pos <= 0) { deleting = false; ex++; timer = setTimeout(tick, 350); return; }
+    timer = setTimeout(tick, 25);
+  }
+}
+function restartTyping() { clearTimeout(timer); ex = 0; pos = 0; deleting = false; tick(); }
+
+document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.lang));
+let saved = null;
+try { saved = localStorage.getItem("lang"); } catch (e) {}
+const guess = saved || (navigator.language || "").slice(0, 2);
+if (guess === "en" || guess === "ka") setLang(guess); else restartTyping();
+</script>
+</body>
+</html>
